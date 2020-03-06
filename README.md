@@ -9,7 +9,7 @@ The binaries for this pack are fetched from Amazon's Ubuntu packages mirror.
 Add the buildpack to your application.
 
 ```bash
-heroku buildpacks:add https://github.com/jamesdphillips/heroku-buildpack-qpdf.git -a my_app
+heroku buildpacks:add https://github.com/pay-it-off/heroku-buildpack-qpdf.git -a my_app
 ```
 
 You can verify installation by running the following.
