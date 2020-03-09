@@ -9,7 +9,7 @@ BUILD_DIR=$1
 VENDOR_DIR="vendor/qpdf"
 
 echo "Downloading binaries" | indent
-mkdir -p "$BUILD_DIR/$VENDOR_DIR" && cd  "$BUILD_DIR/$VENDOR_DIR"
+mkdir -p "$BUILD_DIR/$VENDOR_DIR/bin" && cd  "$BUILD_DIR/$VENDOR_DIR"
 
 
 echo "Downloading binaries" | indent
