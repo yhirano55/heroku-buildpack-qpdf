@@ -12,6 +12,7 @@ VENDOR_DIR="vendor/qpdf"
 
 echo "Creating directories..." | indent
 mkdir -p "$BUILD_DIR/$VENDOR_DIR/bin"
+mkdir -p /app/vendor/qpdf/bin
 cd  "$BUILD_DIR/$VENDOR_DIR"
 
 
