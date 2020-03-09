@@ -8,20 +8,31 @@ indent() {
 
 echo "--------> Install qpdf"
 BUILD_DIR=$1
-VENDOR_DIR="vendor/qpdf"
-
+CACHE_DIR=$2
+ENV_DIR=$3
+TARGET_FILE="qpdf-9.1.1-x86_64.AppImage"
+TARGET_SHA="baa03b96d59caafcee41cca7f7c44870b1434a6942244e7869298bc24dcac4162672e33cc8d3f652fa644da5d05cb7c347459c3ceae7a02f25a0a8a6e8095c95"
+CACHE_FILE="${CACHE_DIR}/${TARGET_FILE}" 
+VENDOR_DIR="${BUILD_DIR}/vendor/qpdf"
+BIN_DIR="${VENDOR_DIR}/bin"
+QPDF="${BIN_DIR}/qpdf"
+TARGET_URL="https://github.com/qpdf/qpdf/releases/download/release-qpdf-9.1.1/${TARGET_FILE}"
 echo "Creating directories..." | indent
-mkdir -p "$BUILD_DIR/$VENDOR_DIR/bin"
-mkdir -p /app/vendor/qpdf/bin
-cd  "$BUILD_DIR/$VENDOR_DIR"
+mkdir -p $CACHE_DIR
+mkdir -p $BIN_DIR
 
-
-echo "Downloading binaries..." | indent
-wget --quiet https://github.com/qpdf/qpdf/releases/download/release-qpdf-9.1.1/qpdf-9.1.1-x86_64.AppImage
-EXPECTED_SHA="baa03b96d59caafcee41cca7f7c44870b1434a6942244e7869298bc24dcac4162672e33cc8d3f652fa644da5d05cb7c347459c3ceae7a02f25a0a8a6e8095c95"
-echo "$EXPECTED_SHA qpdf-9.1.1-x86_64.AppImage" | sha512sum -c - || exit 1
-mv qpdf-9.1.1-x86_64.AppImage /app/vendor/qpdf/bin
-chmod +x /app/vendor/qpdf/bin
+if [ -f $CACHE_DIR/qpdf-9.1.1-x86_64.AppImage ]; then
+  echo "QPDF cached, putting it into place..."
+  cp $CACHE_FILE $QPDF
+  chmod +x $QPDF
+else 
+  echo "Downloading binaries..." | indent
+  wget --quiet $TARGET_URL
+  echo "${TARGET_SHA} ${TARGET_FILE}" | sha512sum -c -
+  cp $TARGET_FILE $QPDF
+  cp $TARGET_FILE $CACHE_FILE
+  chmod +x $QPDF
+fi
          
 
 echo "exporting PATH and LD_LIBRARY_PATH" | indent
