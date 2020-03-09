@@ -1,9 +1,5 @@
 #!/bin/sh
 
 # valid for all
-if [ -f $1/vendor/qpdf/bin/qpdf ]; then
-  echo "qpdf"
-  exit 0
-else
-  exit 1
-fi
+echo "qpdf"
+
