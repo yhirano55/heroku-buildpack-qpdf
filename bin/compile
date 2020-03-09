@@ -17,7 +17,7 @@ cd $VENDOR_DIR
 echo "Downloading binaries" | indent
 wget --quiet https://github.com/qpdf/qpdf/releases/download/release-qpdf-9.1.1/qpdf-9.1.1-x86_64.AppImage
 EXPECTED_SHA="baa03b96d59caafcee41cca7f7c44870b1434a6942244e7869298bc24dcac4162672e33cc8d3f652fa644da5d05cb7c347459c3ceae7a02f25a0a8a6e8095c95"
-echo "\$EXPECTED_SHA qpdf-9.1.1-x86_64.AppImage" | sha512sum -c - || exit 1
+echo "$EXPECTED_SHA qpdf-9.1.1-x86_64.AppImage" | sha512sum -c - || exit 1
 mv qpdf-9.1.1-x86_64.AppImage /app/vendor/qpdf/bin
 chmod +x /app/vendor/qpdf/bin
          
