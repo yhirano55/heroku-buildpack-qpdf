@@ -6,6 +6,14 @@ indent() {
   sed -u 's/^/       /'
 }
 
+extract_app() {
+  chmod +x $TARGET_FILE
+  ./$TARGET_FILE --appimage-extract
+  mv squashfs-root/usr $VENDOR_DIR
+  rm -rf squashfs-root
+  rm -f $TARGET_FILE
+}
+
 echo "--------> Install qpdf"
 BUILD_DIR=$1
 CACHE_DIR=$2
@@ -13,29 +21,22 @@ ENV_DIR=$3
 TARGET_FILE="qpdf-9.1.1-x86_64.AppImage"
 TARGET_SHA="baa03b96d59caafcee41cca7f7c44870b1434a6942244e7869298bc24dcac4162672e33cc8d3f652fa644da5d05cb7c347459c3ceae7a02f25a0a8a6e8095c95"
 CACHE_FILE="${CACHE_DIR}/${TARGET_FILE}" 
-VENDOR_DIR="${BUILD_DIR}/vendor/qpdf"
+VENDOR_DIR="${BUILD_DIR}/vendor"
 BIN_DIR="${VENDOR_DIR}/bin"
-QPDF="${BIN_DIR}/qpdf"
 TARGET_URL="https://github.com/qpdf/qpdf/releases/download/release-qpdf-9.1.1/${TARGET_FILE}"
 echo "Creating directories..." | indent
 mkdir -p $CACHE_DIR
-mkdir -p $BIN_DIR
 
 if [ -f $CACHE_DIR/qpdf-9.1.1-x86_64.AppImage ]; then
   echo "QPDF cached, putting it into place..."
-  cp $CACHE_FILE $QPDF
-  chmod +x $QPDF
-  $QPDF --appimage-extract
-  mv $VENDOR_DIR/squashfs-root/usr $VENDOR_DIR/ 
+  cp $CACHE_FILE ./
+  extract_app
 else 
   echo "Downloading binaries..." | indent
   wget --quiet $TARGET_URL
   echo "${TARGET_SHA} ${TARGET_FILE}" | sha512sum -c -
-  cp $TARGET_FILE $QPDF
   cp $TARGET_FILE $CACHE_FILE
-  chmod +x $QPDF
-  $QPDF --appimage-extract
-  mv $VENDOR_DIR/squashfs-root/usr $VENDOR_DIR/ 
+  extract_app
 fi
          
 
