@@ -25,6 +25,8 @@ if [ -f $CACHE_DIR/qpdf-9.1.1-x86_64.AppImage ]; then
   echo "QPDF cached, putting it into place..."
   cp $CACHE_FILE $QPDF
   chmod +x $QPDF
+  $QPDF --appimage-extract
+  mv $VENDOR_DIR/squashfs-root/usr $VENDOR_DIR/ 
 else 
   echo "Downloading binaries..." | indent
   wget --quiet $TARGET_URL
@@ -32,6 +34,8 @@ else
   cp $TARGET_FILE $QPDF
   cp $TARGET_FILE $CACHE_FILE
   chmod +x $QPDF
+  $QPDF --appimage-extract
+  mv $VENDOR_DIR/squashfs-root/usr $VENDOR_DIR/ 
 fi
          
 
